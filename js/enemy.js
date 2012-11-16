@@ -1,10 +1,7 @@
-//var ENEMIES = new Array();
-//var ENEMIES =						new List();
-//var NUM_ENEMIES =					0;
 
-var ENEMY_SPEED =					1.0;
-var ENEMY_RADIUS =					10;
-var ENEMY_BULLET_SPEED =			BULLET_SPEED;
+var DEFAULT_ENEMY_SPEED =			1.0;
+var DEFAULT_ENEMY_RADIUS =			10;
+var DEFAULT_ENEMY_BULLET_SPEED =	DEFAULT_BULLET_SPEED;
 
 var MIN_ENEMY_BULLET_FREQUENCY =	100;
 var MAX_ENEMY_BULLET_FREQUENCY =	500;
@@ -12,7 +9,7 @@ var MAX_ENEMY_BULLET_FREQUENCY =	500;
 var DEFAULT_ENEMY_COLOR =			"#00FF00";
 
 function Enemy(x, y, speed) {
-	this.radius =			ENEMY_RADIUS;
+	this.radius =			DEFAULT_ENEMY_RADIUS;
 	this.xpos =				x;
 	this.ypos =				y;
 	this.speed =			speed;
@@ -23,12 +20,6 @@ function Enemy(x, y, speed) {
 	this.getRadius =		function() { return this.radius; }
 	this.getSpeed =			function() { return this.speed; }
 	this.getColor =			function() { return this.color; }
-		
-	this.update = function(sx, sy) {
-		this.updatePosition(sx, sy);
-		
-		this.shoot(sx, sy);
-	}
 	
 	this.updatePosition = function(sx, sy) {		
 		var tx = sx - this.getX();
@@ -45,12 +36,9 @@ function Enemy(x, y, speed) {
 	var bulletCounter = 0;
 	var bulletFrequency = Math.floor(Math.random() * MAX_ENEMY_BULLET_FREQUENCY + 1) + MIN_ENEMY_BULLET_FREQUENCY;
 	
-	this.shoot = function(sx, sy) {		
-		//var bid = setInterval();
+	this.shoot = function(sx, sy) {
 		if (bulletCounter == bulletFrequency) {	
-			var b = new Bullet(this.getX(), this.getY(), sx, sy, ENEMY_BULLET_SPEED, ENEMY_BULLET);
-			//BULLETS.push(b);
-			//BULLETS.add(b);
+			var b = new Bullet(this.getX(), this.getY(), sx, sy, DEFAULT_ENEMY_BULLET_SPEED, ENEMY_BULLET_ID);
 			BULLETS.push(b);
 			NUM_BULLETS++;
 			bulletCounter = 0;
@@ -60,7 +48,8 @@ function Enemy(x, y, speed) {
 	}
 	
 	this.redraw = function(sx, sy) {
-		this.update(sx, sy);
+		this.updatePosition(sx, sy);		
+		this.shoot(sx, sy);
 		
 		ctx.fillStyle = this.getColor();
 		ctx.beginPath();
@@ -71,11 +60,24 @@ function Enemy(x, y, speed) {
 		ctx.closePath();
 		ctx.fill();
 	}
+	
+	this.remove = function(i) {
+		ENEMIES.splice(i, 1);
+		NUM_ENEMIES--;
+	}
+}
+
+function redrawEnemies() {
+	for (i=0; i<NUM_ENEMIES; i++) {
+		var enemy = ENEMIES[i];
+		var shipX = PLAYER.getX();
+		var shipY = PLAYER.getY();
+		enemy.redraw(shipX, shipY);
+	}
 }
 
 function createEnemy(x, y) {		
-	var e = new Enemy(x, y, ENEMY_SPEED);
-	//ENEMIES.add(e);
+	var e = new Enemy(x, y, DEFAULT_ENEMY_SPEED);
 	ENEMIES.push(e);
 	NUM_ENEMIES++;
 }

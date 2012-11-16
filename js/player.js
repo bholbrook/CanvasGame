@@ -1,8 +1,10 @@
+
 var DEFAULT_SHIP_COLOR =			"#00FFFF";
 var DEFAULT_INNER_SHIP_COLOR =		"#000000";
-
 var DEFAULT_SHIP_RADIUS = 			10;
 var DEFAULT_SHIP_INNER_RADIUS =		2;
+
+var PLAYER_DEATHS = 0;
 
 function Player() {
 	this.xpos =				0;
@@ -42,4 +44,13 @@ function Player() {
 		ctx.closePath();
 		ctx.fill();
 	}
+}
+
+function redrawPlayer() {
+	PLAYER.redraw();
+}
+
+function playerDeath() {
+	//alert("You have been killed.");
+	deathsOut(++PLAYER_DEATHS);
 }

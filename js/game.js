@@ -7,11 +7,9 @@ var BOTTOM = 0;
 
 var PLAYER = new Player();
 
-//var ENEMIES = new List();
 var ENEMIES = new Array();
 var NUM_ENEMIES = 0;
 
-//var BULLETS = new List();
 var BULLETS = new Array();
 var NUM_BULLETS = 0;
 
@@ -43,8 +41,6 @@ function toggleOn() {
 	if (tid == 0) {
 		var sx = PLAYER.getX();
 		var sy = PLAYER.getY();
-		//tid = setInterval("createPlayerBullet(sx, sy, cursorX, cursorY)", tspeed);
-		//createPlayerBullet(sx, sy, cursorX, cursorY)
 		tid = setInterval(function() { createPlayerBullet(PLAYER.getX(), PLAYER.getY(), cursorX, cursorY) }, tspeed);
 	}
 }
@@ -115,46 +111,16 @@ function redrawCursor() {
 	ctx.fill();
 }
 
-function redrawPlayer() {
-	PLAYER.redraw();
-}
-
-function redrawBullets() {
-	for (i=0; i<NUM_BULLETS; i++) {
-		//var bullet = BULLETS.get(i);
-		var bullet = BULLETS[i];
-		bullet.redraw();
-	}
-}
-
-function redrawEnemies() {
-	for (i=0; i<NUM_ENEMIES; i++) {
-		//var enemy = ENEMIES.get(i);
-		var enemy = ENEMIES[i];
-		var shipX = PLAYER.getX();
-		var shipY = PLAYER.getY();
-		enemy.redraw(shipX, shipY);
-	}
-}
-
-var playerDeaths = 0;
-function playerDeath() {
-	//alert("You have been killed.");
-	deathsOut(++playerDeaths);
-}
-
-function removeEnemy(i) {
-	ENEMIES.splice(i, 1);
-	//ENEMIES.remove(i);
-	NUM_ENEMIES--;
-}
-
 function collision(c1, c2) {
-	var dx = c1.getX() - c2.getX();
-	var dy = c1.getY() - c2.getY();
-	var dist = c1.getRadius() + c2.getRadius();
- 
-	return (dx * dx + dy * dy <= dist * dist)
+	try {
+		var dx = c1.getX() - c2.getX();
+		var dy = c1.getY() - c2.getY();
+		var dist = c1.getRadius() + c2.getRadius();
+	 
+		return (dx * dx + dy * dy <= dist * dist)
+	} catch(e) {
+		error(e.message);
+	}
 }
 
 function checkCollisions() {
@@ -163,9 +129,13 @@ function checkCollisions() {
 			//if (BULLETS.get(j).isPlayerBullet()) {
 			if (BULLETS[j].isPlayerBullet()) {
 				//if (collision(BULLETS.get(j), ENEMIES.get(i))) {
-				if (collision(BULLETS[j], ENEMIES[i])) {			
-					removeEnemy(i);
-				}			
+				if (collision(BULLETS[j], ENEMIES[i])) {
+					try {			
+						ENEMIES[i].remove(i);
+					} catch(e) {
+						error(e.message);
+					}
+				}
 			} else {
 				// Bullet is enemy's, check if collides with player
 				if (collision(BULLETS[j], PLAYER)) {
@@ -184,30 +154,6 @@ function init() {
 	
 	// Reduce to 1 for maximum fps
 	return setInterval(draw, 10);
-}
-
-function clearOutput() {
-	document.getElementById("output").innerHTML = "";
-}
-
-function output(out) {
-	document.getElementById("output").innerHTML = "Output: " + out;
-}
-
-function fpsOut(out) {
-	document.getElementById("fps").innerHTML = "FPS: " + out;
-}
-
-function bulletsOut(out) {
-	document.getElementById("bullets").innerHTML = "Bullets: " + out;
-}
-
-function enemiesOut(out) {
-	document.getElementById("enemies").innerHTML = "Enemies: " + out;	
-}
-
-function deathsOut(out) {
-	document.getElementById("deaths").innerHTML = "Deaths: " + out;	
 }
 
 // Keyboard movement
