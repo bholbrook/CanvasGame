@@ -54,7 +54,7 @@ function Enemy(x, y, speed, zone) {
 	
 	this.redraw = function(sx, sy) {
 		this.updatePosition(sx, sy);		
-		this.shoot(sx, sy);
+		//this.shoot(sx, sy);
 		
 		ctx.fillStyle = this.getColor();
 		ctx.beginPath();
@@ -94,8 +94,12 @@ function generateRandomEnemies() {
 	var n = 100;
 	for (i=0; i<n; i++) {
 		var zone = getRandomEnemyZone();
-		var x = Math.floor(Math.random() * zone.getRightBoundary()) + zone.getLeftBoundary();
-		var y = Math.floor(Math.random() * zone.getBottomBoundary()) + zone.getTopBoundary();
+		
+		var x = -1, y = -1;
+		while (x < zone.getLeftBoundary() || x > zone.getRightBoundary())
+			x = Math.floor(Math.random() * zone.getRightBoundary()) + zone.getLeftBoundary();
+		while (y < zone.getTopBoundary() || y > zone.getBottomBoundary())
+			y = Math.floor(Math.random() * zone.getBottomBoundary()) + zone.getTopBoundary();
 		
 		createEnemy(x, y, zone);
 	}

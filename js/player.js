@@ -7,8 +7,8 @@ var DEFAULT_SHIP_INNER_RADIUS =		2;
 var PLAYER_DEATHS = 0;
 
 function Player() {
-	this.xpos =				0;
-	this.ypos = 			0;
+	this.xpos =				250;
+	this.ypos = 			450;
 	this.radius = 			DEFAULT_SHIP_RADIUS;
 	this.innerRadius =		DEFAULT_SHIP_INNER_RADIUS;
 	this.color = 			DEFAULT_SHIP_COLOR;

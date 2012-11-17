@@ -126,15 +126,9 @@ function collision(c1, c2) {
 function checkCollisions() {
 	for (i=0; i<NUM_ENEMIES; i++) {
 		for (j=0; j<NUM_BULLETS; j++) {
-			//if (BULLETS.get(j).isPlayerBullet()) {
 			if (BULLETS[j].isPlayerBullet()) {
-				//if (collision(BULLETS.get(j), ENEMIES.get(i))) {
 				if (collision(BULLETS[j], ENEMIES[i])) {
-					try {			
-						ENEMIES[i].remove(i);
-					} catch(e) {
-						error(e.message);
-					}
+					ENEMIES[i].remove(i);
 				}
 			} else {
 				// Bullet is enemy's, check if collides with player
@@ -142,6 +136,10 @@ function checkCollisions() {
 					playerDeath();
 				}
 			}
+		}
+		if (collision(ENEMIES[i], PLAYER)) {
+			ENEMIES[i].remove(i);
+			playerDeath();
 		}
 	}
 }
