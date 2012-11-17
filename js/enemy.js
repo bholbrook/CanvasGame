@@ -8,12 +8,13 @@ var MAX_ENEMY_BULLET_FREQUENCY =	500;
 
 var DEFAULT_ENEMY_COLOR =			"#00FF00";
 
-function Enemy(x, y, speed) {
+function Enemy(x, y, speed, zone) {
 	this.radius =			DEFAULT_ENEMY_RADIUS;
 	this.xpos =				x;
 	this.ypos =				y;
 	this.speed =			speed;
 	this.color =			DEFAULT_ENEMY_COLOR;
+	this.zone =				zone;
 
 	this.getX =				function() { return this.xpos; }
 	this.getY =				function() { return this.ypos; }
@@ -29,8 +30,12 @@ function Enemy(x, y, speed) {
 		this.dx = (tx / length) * speed;
 		this.dy = (ty / length) * speed;
 		
-		this.xpos += this.dx;
-		this.ypos += this.dy;
+		var newX = this.xpos + this.dx;
+		var newY = this.ypos + this.dy;
+		if (newX >= this.zone.getLeftBoundary() && newX <= this.zone.getRightBoundary())
+			this.xpos = newX;
+		if (newY >= this.zone.getTopBoundary() && newY <= this.zone.getBottomBoundary()) 
+			this.ypos = newY;
 	}
 	
 	var bulletCounter = 0;
@@ -76,8 +81,8 @@ function redrawEnemies() {
 	}
 }
 
-function createEnemy(x, y) {		
-	var e = new Enemy(x, y, DEFAULT_ENEMY_SPEED);
+function createEnemy(x, y, zone) {
+	var e = new Enemy(x, y, DEFAULT_ENEMY_SPEED, zone);
 	ENEMIES.push(e);
 	NUM_ENEMIES++;
 }
@@ -85,13 +90,13 @@ function createEnemy(x, y) {
 function generateRandomEnemies() {
 	var maxNumEnemies = 100;
 	var minNumEnemies = 20;
-	var x = 0, y = 0;
 	
 	var n = 100;
 	for (i=0; i<n; i++) {
-		x = Math.floor(Math.random() * RIGHT + 1) + LEFT;
-		y = Math.floor(Math.random() * TOP + 1) + BOTTOM;
+		var zone = getRandomEnemyZone();
+		var x = Math.floor(Math.random() * zone.getRightBoundary()) + zone.getLeftBoundary();
+		var y = Math.floor(Math.random() * zone.getBottomBoundary()) + zone.getTopBoundary();
 		
-		createEnemy(x, y);
+		createEnemy(x, y, zone);
 	}
 }

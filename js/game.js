@@ -150,6 +150,7 @@ function init() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 	
+	generateEnemyZones();
 	generateRandomEnemies();
 	
 	// Reduce to 1 for maximum fps
@@ -157,8 +158,7 @@ function init() {
 }
 
 // Keyboard movement
-
-// Source from: http://stackoverflow.com/questions/7212103/how-to-move-an-image-around-with-arrow-keys-javascript
+// Sourced from: http://stackoverflow.com/questions/7212103/how-to-move-an-image-around-with-arrow-keys-javascript
 
 // movement vars
 var xspeed = 1;
