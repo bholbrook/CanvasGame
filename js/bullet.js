@@ -1,7 +1,8 @@
 
-var DEFAULT_BULLET_COLOR = "#FF00FF";
-var DEFAULT_BULLET_SPEED =	4.0;
+var DEFAULT_BULLET_SPEED =	2.0;
 var DEFAULT_BULLET_RADIUS =	5;
+var DEFAULT_BULLET_COLOR = "#FF00FF";
+var DEFAULT_BULLET_GRADIENT = null;
 
 var PLAYER_BULLET_ID =	0;
 var ENEMY_BULLET_ID =	1;
@@ -45,6 +46,18 @@ function Bullet(x1, y1, x2, y2, speed, owner) {
 			this.remove(i);
 			
 		} else {
+			var gradient = ctx.createRadialGradient(this.getX(), this.getY(), this.getRadius()/3, this.getX(), this.getY(), this.getRadius());
+			gradient.addColorStop(0, '#A7D30C');
+			gradient.addColorStop(0.9, '#019F62');
+			gradient.addColorStop(1, 'rgba(1,159,98,0)');
+			ctx.fillStyle = gradient;
+			
+			ctx.shadowOffsetX = 5;
+			ctx.shadowOffsetY = 5;
+			ctx.shadowBlur = 2;
+			ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+			
+			
 			ctx.moveTo(this.getX(), this.getY());
 			ctx.arc(this.getX(), this.getY(), this.getRadius(), 0, Math.PI * 2, true);
 		}
@@ -84,4 +97,10 @@ function redrawBullets() {
 		var bullet = BULLETS[i];
 		bullet.redraw(i);
 	}
+}
+
+function setBlueBullets() {
+	DEFAULT_BULLET_GRADIENT = ctx.createRadialGradient(60,60,20,60,60,70);
+	DEFAULT_BULLET_GRADIENT.addColorStop(0, 'white');
+	DEFAULT_BULLET_GRADIENT.addColorStop(1, 'black');
 }

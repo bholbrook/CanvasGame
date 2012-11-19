@@ -10,6 +10,7 @@ Build better AI
 NOTES:
 Need to build a List object so that can replace all Arrays with Lists to use the removeAt(i) function to fix bug 1.
 
-
+BUGS:
+Running into an enemy removes all bullets associated with it too
 
 */

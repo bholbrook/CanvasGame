@@ -133,6 +133,7 @@ function checkCollisions() {
 			} else {
 				// Bullet is enemy's, check if collides with player
 				if (collision(BULLETS[j], PLAYER)) {
+					BULLETS[j].remove();
 					playerDeath();
 				}
 			}
@@ -148,6 +149,7 @@ function init() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 	
+	//setBlueBullets();
 	generateEnemyZones();
 	generateRandomEnemies();
 	

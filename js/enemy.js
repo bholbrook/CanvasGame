@@ -1,9 +1,9 @@
 
-var DEFAULT_ENEMY_SPEED =			1.0;
+var DEFAULT_ENEMY_SPEED =			0.5;
 var DEFAULT_ENEMY_RADIUS =			10;
 var DEFAULT_ENEMY_BULLET_SPEED =	DEFAULT_BULLET_SPEED;
 
-var MIN_ENEMY_BULLET_FREQUENCY =	100;
+var MIN_ENEMY_BULLET_FREQUENCY =	400;
 var MAX_ENEMY_BULLET_FREQUENCY =	500;
 
 var DEFAULT_ENEMY_COLOR =			"#00FF00";
@@ -54,7 +54,7 @@ function Enemy(x, y, speed, zone) {
 	
 	this.redraw = function(sx, sy) {
 		this.updatePosition(sx, sy);		
-		//this.shoot(sx, sy);
+		this.shoot(sx, sy);
 		
 		ctx.fillStyle = this.getColor();
 		ctx.beginPath();
