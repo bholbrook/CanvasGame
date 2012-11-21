@@ -4,6 +4,8 @@ var DEFAULT_SHIP_COLOR =			"#000000";
 var DEFAULT_SHIP_OUTER_RADIUS = 	10;
 var DEFAULT_SHIP_RADIUS =			2;
 
+var DEFAULT_PLAYER_GRADIENT = "";
+
 var PLAYER_DEATHS = 0;
 
 function Player() {
@@ -13,6 +15,7 @@ function Player() {
 	this.outerRadius =		DEFAULT_SHIP_OUTER_RADIUS;
 	this.color = 			DEFAULT_SHIP_COLOR;
 	this.outerColor = 		DEFAULT_SHIP_OUTER_COLOR;
+	//this.gradient = 		setDefaultPlayerGradient();
 	
 	this.getX = 			function() { return this.xpos; }
 	this.getY = 			function() { return this.ypos; }
@@ -44,6 +47,15 @@ function Player() {
 		ctx.closePath();
 		ctx.fill();
 	}
+}
+
+function setDefaultPlayerGradient() {
+	var gradient = ctx.createRadialGradient(this.getX(), this.getY(), this.getRadius()/3, this.getX(), this.getY(), this.getRadius());
+	gradient.addColorStop(0, '#A7D30C');
+	gradient.addColorStop(0.9, '#019F62');
+	gradient.addColorStop(1, 'rgba(1,159,98,0)');
+	
+	DEFAULT_PLAYER_GRADIENT = gradient;
 }
 
 function redrawPlayer() {

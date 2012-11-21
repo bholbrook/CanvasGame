@@ -71,7 +71,11 @@ function draw() {
 	
 	fpsOut(fps);
 	
-	ctx.clearRect(0, 0, WIDTH, HEIGHT);
+	//ctx.clearRect(0, 0, WIDTH, HEIGHT);
+	ctx.globalCompositeOperation = "source-over";
+	ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+	ctx.fillRect(0, 0, WIDTH, HEIGHT);
+	
 	// change position based on speed
 	var shipX = Math.min(Math.max(PLAYER.getX() + xspeed, minx), maxx);
 	var shipY = Math.min(Math.max(PLAYER.getY() + yspeed, miny), maxy);
@@ -95,8 +99,9 @@ function draw() {
 	
 	redrawCursor();
 	redrawPlayer();
-	redrawBullets();
 	redrawEnemies(shipX, shipY);
+	ctx.globalCompositeOperation = "lighter";
+	redrawBullets();
 	checkCollisions();
 	
 	bulletsOut(NUM_BULLETS);

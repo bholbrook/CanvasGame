@@ -1,6 +1,6 @@
 
 var DEFAULT_BULLET_SPEED =	2.0;
-var DEFAULT_BULLET_RADIUS =	5;
+var DEFAULT_BULLET_RADIUS =	10;
 var DEFAULT_BULLET_COLOR = "#FF00FF";
 var DEFAULT_BULLET_GRADIENT = null;
 
@@ -8,11 +8,12 @@ var PLAYER_BULLET_ID =	0;
 var ENEMY_BULLET_ID =	1;
 
 function Bullet(x1, y1, x2, y2, speed, owner) {
-	this.color = 	DEFAULT_BULLET_COLOR;
-	this.radius =	DEFAULT_BULLET_RADIUS;
 	this.owner =	owner;	
 	this.xpos =		x1;
 	this.ypos =		y1;
+	this.color = 	DEFAULT_BULLET_COLOR;
+	this.radius =	DEFAULT_BULLET_RADIUS;
+	this.gradient = new Gradient();
 	
 	var tx = x2 - x1;
 	var ty = y2 - y1;
@@ -46,17 +47,27 @@ function Bullet(x1, y1, x2, y2, speed, owner) {
 			this.remove(i);
 			
 		} else {
+			/*
 			var gradient = ctx.createRadialGradient(this.getX(), this.getY(), this.getRadius()/3, this.getX(), this.getY(), this.getRadius());
 			gradient.addColorStop(0, '#A7D30C');
 			gradient.addColorStop(0.9, '#019F62');
 			gradient.addColorStop(1, 'rgba(1,159,98,0)');
+			*/
+			var gradient = ctx.createRadialGradient(this.getX(), this.getY(), this.getRadius()/0.5, this.getX(), this.getY(), this.getRadius());
+			gradient.addColorStop(0, this.gradient.getColorOne());
+			gradient.addColorStop(0.9, this.gradient.getColorTwo());
+			gradient.addColorStop(1, this.gradient.getColorThree());
+			
 			ctx.fillStyle = gradient;
 			
+			//setGreenBulletGradient();
+			
+			/*
 			ctx.shadowOffsetX = 5;
 			ctx.shadowOffsetY = 5;
 			ctx.shadowBlur = 2;
 			ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-			
+			*/
 			
 			ctx.moveTo(this.getX(), this.getY());
 			ctx.arc(this.getX(), this.getY(), this.getRadius(), 0, Math.PI * 2, true);
@@ -98,9 +109,21 @@ function redrawBullets() {
 		bullet.redraw(i);
 	}
 }
+/*
+function setGreenBulletGradient() {
+	var gradient = ctx.createRadialGradient(this.getX(), this.getY(), this.getRadius()/3, this.getX(), this.getY(), this.getRadius());
+	gradient.addColorStop(0, '#A7D30C');
+	gradient.addColorStop(0.9, '#019F62');
+	gradient.addColorStop(1, 'rgba(1,159,98,0)');
+	
+	DEFAULT_BULLET_GRADIENT = gradient;
+}*/
 
-function setBlueBullets() {
-	DEFAULT_BULLET_GRADIENT = ctx.createRadialGradient(60,60,20,60,60,70);
-	DEFAULT_BULLET_GRADIENT.addColorStop(0, 'white');
-	DEFAULT_BULLET_GRADIENT.addColorStop(1, 'black');
+function setGreenBulletGradient() {
+	var gradient = ctx.createRadialGradient(this.getX(), this.getY(), this.getRadius()/3, this.getX(), this.getY(), this.getRadius());
+	gradient.addColorStop(0, '#A7D30C');
+	gradient.addColorStop(0.9, '#019F62');
+	gradient.addColorStop(1, 'rgba(1,159,98,0)');
+	
+	ctx.fillStyle = gradient;
 }
